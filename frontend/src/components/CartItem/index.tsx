@@ -1,8 +1,15 @@
 import "./style.css";
 import { Link } from "react-router-dom";
 import QuantitySelect from "../QuantitySelect";
+import { Product } from "../../context/CartContext";
 
-const CartItem = ({ item, qtyChangeHandler, removeHandler }) => {
+type CartItemProps = {
+  item: Product,
+  qtyChangeHandler(id: string, qty: number): void,
+  removeHandler(id: string): void
+}
+
+const CartItem = ({ item, qtyChangeHandler, removeHandler }: CartItemProps) => {
   return (
     <div className="cart-item">
       <div className="cart-item__image">
@@ -15,7 +22,7 @@ const CartItem = ({ item, qtyChangeHandler, removeHandler }) => {
       <QuantitySelect
         className="cart-item__select"
         qty={item.qty}
-        handleOnChange={(e) => qtyChangeHandler(item.id, e.target.value)}
+        handleOnChange={(e: React.ChangeEvent<HTMLSelectElement>) => qtyChangeHandler(item.id, Number(e.target.value))}
         stockCount={item.countInStock}
       />
       <button

@@ -5,10 +5,10 @@ const DEFAULT_OPTIONS = {
   headers: { "Content-Type": "application/json" },
 }
 
-export function useFetch(url, options = {}, dependencies = []) {
+export function useFetch<T>(url: string, options = {}, dependencies: any[] = []) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState()
-  const [value, setValue] = useState()
+  const [value, setValue] = useState<T | undefined>()
 
   const callbackMemoized = useCallback(() => {
     setLoading(true);
@@ -22,7 +22,7 @@ export function useFetch(url, options = {}, dependencies = []) {
 
       return res.json().then(json => Promise.reject(json));
     })
-      .then(setValue)
+      .then(data => setValue(data as T))
       .catch(setError)
       .finally(() => setLoading(false))
   }, dependencies);

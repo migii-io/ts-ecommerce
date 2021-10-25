@@ -1,7 +1,16 @@
 import "./style.css";
 import { Link } from "react-router-dom";
 
-const Product = ({ imageUrl, price, name, productId }) => {
+type ProductProps = {
+  imageUrl: string,
+  price: number,
+  name: string,
+  productId?: string
+}
+
+const Product = ({ imageUrl, price, name, productId }: ProductProps) => {
+  if (!productId) return <h2>Not found</h2>
+
   return (
     <div className="product">
       <img src={imageUrl} alt={name} />

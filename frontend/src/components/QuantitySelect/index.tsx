@@ -1,6 +1,18 @@
 import React from 'react';
 
-function QuantitySelect({ qty, handleOnChange, stockCount, className }) {
+type QuantitySelectProps = {
+  qty: number,
+  handleOnChange(e: React.ChangeEvent<HTMLSelectElement>): void,
+  stockCount: number,
+  className?: string
+}
+
+function QuantitySelect({
+  qty,
+  handleOnChange,
+  stockCount,
+  className
+}: QuantitySelectProps) {
   return (
     <select
       className={className}

@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import express, { json } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import router from './routes/productRoutes.js';
@@ -12,7 +12,7 @@ const app = express();
 
 app.use(cors());
 
-app.use(json());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ message: "API running..." });
@@ -20,10 +20,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/products", router);
 
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
 
-  return response.status(500).json({
+  return res.status(500).json({
     message: 'Internal server error',
   });
 });

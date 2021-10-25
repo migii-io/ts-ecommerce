@@ -9,11 +9,11 @@ const CartScreen = () => {
     cart, handleAddToCart, handleRemoveFromCart
   } = useCart();
 
-  const qtyChangeHandler = (id, qty) => {
+  const qtyChangeHandler = (id: string, qty: number) => {
     handleAddToCart({ id, qty });
   };
 
-  const removeFromCartHandler = (id) => {
+  const removeFromCartHandler = (id: string) => {
     handleRemoveFromCart({ id });
   };
 

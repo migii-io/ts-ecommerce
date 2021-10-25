@@ -1,7 +1,7 @@
 import { config } from "dotenv";
-import productData from "./data/products";
-import connectDB from "./config/db";
-import { deleteMany, insertMany } from "./models/Product";
+import productData from "./data/products.js";
+import connectDB from "./config/db.js";
+import Product from "./models/Product.js";
 
 config();
 
@@ -9,9 +9,9 @@ connectDB();
 
 const importData = async () => {
   try {
-    await deleteMany({});
+    await Product.deleteMany({});
 
-    await insertMany(productData);
+    await Product.insertMany(productData);
 
     console.log("Data Import Success");
 

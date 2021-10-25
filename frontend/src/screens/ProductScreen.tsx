@@ -1,16 +1,26 @@
 import "./ProductScreen.css";
 import { useState } from "react";
+import { match } from "react-router";
+import { History } from "history";
 
 import { useCart } from "../hooks/useCart";
 import { useFetch } from "../hooks/useFetch";
 import QuantitySelect from "../components/QuantitySelect";
+import { Product } from "../context/CartContext";
 
-const ProductScreen = ({ match, history }) => {
+type ProductScreen = {
+  match: match<{ id?: string }>,
+  history: History
+}
+
+const ProductScreen = ({ match, history }: ProductScreen) => {
   const [qty, setQty] = useState(1);
-  const { loading, error, value: product } = useFetch(`http://localhost:5000/api/products/${match.params.id}`);
+  const { loading, error, value: product } = useFetch<Product>(`http://localhost:5000/api/products/${match.params.id}`);
   const { handleAddToCart } = useCart();
 
   const addToCartHandler = () => {
+    if (!product || !product._id) return;
+
     handleAddToCart({ id: product._id, qty });
     history.push(`/cart`);
   };
@@ -24,7 +34,7 @@ const ProductScreen = ({ match, history }) => {
     )
   }
 
-  if (error) {
+  if (error || !product) {
     return (
       <div className="center">
         <h2>{error}</h2>
@@ -60,7 +70,7 @@ const ProductScreen = ({ match, history }) => {
             Qty:
             <QuantitySelect
               qty={qty}
-              handleOnChange={(e) => setQty(e.target.value)}
+              handleOnChange={(e) => setQty(Number(e.target.value))}
               stockCount={product.countInStock}
             />
           </p>

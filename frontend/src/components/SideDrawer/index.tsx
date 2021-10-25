@@ -2,7 +2,12 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import { useCart } from "../../hooks/useCart";
 
-const Navbar = ({ click }) => {
+type SideDrawerProps = {
+  click: React.MouseEventHandler<HTMLUListElement>,
+  show: boolean
+}
+
+const SideDrawer = ({ show, click }: SideDrawerProps) => {
   const { cart } = useCart();
 
   const getCartCount = () => {
@@ -10,13 +15,14 @@ const Navbar = ({ click }) => {
   };
 
   return (
-    <nav className="navbar">
-      <ul className="navbar__links">
+    <div className={`sidedrawer ${show ? "show" : ""}`}>
+      <ul className="sidedrawer__links" onClick={click}>
         <li>
-          <Link to="/cart" className="cart__link">
+          <Link to="/cart">
             <i className="fas fa-shopping-cart"></i>
             <span>
-              Cart <span className="cartlogo__badge">{getCartCount()}</span>
+              Cart{" "}
+              <span className="sidedrawer__cartbadge">{getCartCount()}</span>
             </span>
           </Link>
         </li>
@@ -24,14 +30,8 @@ const Navbar = ({ click }) => {
           <Link to="/">Shop</Link>
         </li>
       </ul>
-
-      <div className="hamburger__menu" onClick={click}>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </nav>
+    </div>
   );
 };
 
-export default Navbar;
+export default SideDrawer;
